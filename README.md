@@ -206,3 +206,11 @@ IP-SAKTI Sahayak aims to make trustworthy IP and regulatory information more acc
 ## License
 
 This project is distributed under the license included in the repository. See [LICENSE](LICENSE) for details.
+
+TEAM MEMBERS- 
+1. Krrish Kumar
+2. Parth Goel
+3. Bhavya Minocha
+4. Prafull Gothwal
+5. Sayesha Varshney
+6. Nikhil Sachdeva
