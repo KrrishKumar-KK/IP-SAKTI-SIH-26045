@@ -1,0 +1,208 @@
+# IP-SAKTI Sahayak
+
+> **Where Traditional Knowledge Meets Its Rightful Protection**
+
+IP-SAKTI Sahayak is a multilingual, Retrieval-Augmented Generation (RAG)-based AI assistant that helps users explore Ayurveda, traditional-knowledge, intellectual-property, and regulatory questions using source-cited evidence. It is designed to provide traceable, jurisdiction-aware information rather than unsupported chatbot responses.
+
+## Project Information
+
+| Field | Details |
+| --- | --- |
+| Problem Statement ID | SIH26045 |
+| Problem Statement | IP-SAKTI Sahayak - RAG-based, source-cited AI assistant |
+| Theme | MedTech / BioTech / HealthTech |
+| Category | Software |
+| Team | Hallucinators |
+
+## Problem Statement
+
+Ayurvedic practitioners, researchers, startups, and traditional-knowledge holders often need to navigate complex intellectual-property and regulatory requirements. Relevant information is distributed across statutes, treaties, registry records, and traditional-knowledge sources. A general-purpose chatbot can conflate jurisdictions, generate unverifiable statements, or omit the legal sources needed for review.
+
+## Proposed Solution
+
+IP-SAKTI Sahayak provides a multilingual research interface that classifies each query and retrieves evidence from the appropriate knowledge sources before generating a structured, citation-bound response. It separates Indian and international legal contexts, ranks evidence by authority, shows sources, and can route low-confidence cases for human IP-facilitator review.
+
+> **Important:** IP-SAKTI Sahayak is an information and research-support tool. Its responses are not legal advice. Users should consult a qualified professional for decisions involving legal rights, filings, or regulatory compliance.
+
+### Key Features:
+
+* *Multi-RAG architecture* combining Ayurveda/Traditional Knowledge with legal and regulatory evidence.
+* *Hybrid retrieval* using BM25 keyword retrieval, semantic vector search, and Reciprocal Rank Fusion for improved evidence retrieval.
+* *Multilingual support* for English, Hindi, and Hinglish, including terminology normalization for traditional Ayurvedic concepts.
+* *Jurisdiction-aware research* supporting Indian and international legal contexts.
+* *Citation-backed answers* with source references, legal sections, document details, and evidence traceability.
+* *Agentic reasoning and knowledge graph analysis* to connect biological resources, statutory provisions, regulatory authorities, and compliance requirements.
+* *Research tools* for focused IP and prior-art research, allowing users to investigate specific Ayurvedic concepts, traditional knowledge, patents, legal provisions, and regulatory information through targeted evidence retrieval.
+* *Historical legal lookup* to examine provisions according to their effective dates and versions.
+* *Confidence-based human review*, allowing low-confidence or sensitive legal queries to be escalated to a human IP facilitator along with the question, answer, confidence signal, and cited evidence.
+* *Voice input and research tools* to make the platform easier to access and use.
+
+## Technology Stack
+
+| Layer | Technologies |
+| --- | --- |
+| Frontend | React 19, Vite, Tailwind CSS, JavaScript |
+| Backend | Python, FastAPI, Uvicorn, Pydantic |
+| Retrieval and ML | Dual RAG, scikit-learn, NumPy, hybrid BM25/vector retrieval |
+| Data | SQLite-backed vector/chunk stores, JSONL/CSV evidence corpus |
+| AI and language services | Groq LLM, optional BHASHINI translation, optional Deepgram transcription |
+| Testing | pytest plus frontend contract and interaction tests |
+| Deployment | Docker and Render |
+
+## Architecture
+
+```text
+User
+  |
+  v
+React + Vite multilingual interface
+  |
+  v
+FastAPI API Gateway
+  |
+  v
+Orchestrator Service
+  |
+  +--> Query Router (conceptual / legal / hybrid)
+  |       |
+  |       +--> RAG 1: Ayurveda and traditional-knowledge retrieval
+  |       |
+  |       +--> RAG 2: Legal and regulatory evidence retrieval
+  |
+  +--> Citation ranking, conflict detection, and evidence fusion
+  |
+  v
+Groq LLM guardrailed synthesis
+  |
+  v
+Source-cited response + confidence score + optional human escalation
+```
+
+The application keeps the RAG 1 and RAG 2 stores separate (`vector.db` and `vector_rag2.db`). The legal corpus preserves source metadata and is versioned to support traceability.
+
+## Repository Structure
+
+```text
+YOUR-SIH-PROJECT/
+├── README.md                       # Project overview and setup instructions
+├── SUBMISSION_GUIDE.md             # SIH submission checklist
+├── submission/
+│   ├── PRESENTATION.md              # Final presentation or accessible viewer link
+│   └── DEMO.md                      # Demo video link and walkthrough
+├── src/
+      ├── backend/
+      │   ├── app/
+      │   │   ├── main.py                 # FastAPI application
+      │   │   ├── orchestrator/           # Routing, synthesis, human-review and voice flows
+      │   │   ├── rag2/                   # Legal/regulatory RAG, versioning and conflict detection
+      │   │   └── data/                   # Data models, storage and ingestion
+      │   ├── frontend/                   # React + Vite client application
+      │   ├── tests/                      # Backend, integration and contract tests
+      │   ├── requirements.txt
+      │   └── run.py
+      ├── frontend/                       # Root frontend configuration/build assets
+      ├── Dockerfile
+      ├── render.yaml
+      ├── run-dev.js                      # Unified development runner
+      ├── start.sh
+      └── package.json                      # All project source code starts here
+  ├── docs/
+  │   └── architecture.md              # Technical architecture documentation
+  ├── assets/
+  │   └── screenshots/
+  │       └── README.md                # Screenshot naming and upload guidance
+  ├── requirements.txt                 # Python dependencies
+  ├── .gitignore                       # Ignored files and secrets
+  └── LICENSE
+```
+
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.10 or later
+- A Groq API key for LLM-powered synthesis
+
+### Install and run locally
+
+```bash
+git clone <YOUR_REPOSITORY_URL>
+cd <YOUR_PROJECT_FOLDER>
+python -m venv .venv
+```
+
+Activate the environment and install dependencies:
+
+```bash
+source .venv/bin/activate        # macOS/Linux
+# .venv\Scripts\activate         # Windows PowerShell
+pip install -r requirements.txt
+```
+
+Create a `.env` file and add required server-side settings:
+
+```env
+GROQ_API_KEY=your_groq_api_key
+```
+
+Run the application:
+
+```bash
+uvicorn src.main:app --reload
+```
+
+Then open:
+
+- API documentation: `http://127.0.0.1:8000/docs`
+- Application: `http://127.0.0.1:8000`
+
+
+## Testing
+
+Run the project's test suite after adding tests under `src/` or a `tests/` directory:
+
+```bash
+pytest
+```
+
+## Production Build and Deployment
+
+Build a production-ready container or deploy the FastAPI application to the selected cloud provider. Keep Docker, cloud configuration, and deployment documentation outside `src/`; the application code itself remains under `src/`.
+
+Store every API key as a deployment secret, never in the repository.
+
+## Evidence Sources
+
+The project is designed around curated traditional-knowledge, IP, and regulatory evidence, including:
+
+- The Patents Act, 1970 and Patent Rules (India Code)
+- The Biological Diversity Act, 2002 and National Biodiversity Authority guidance
+- Traditional Knowledge Digital Library (TKDL) and CSIR prior-art material
+- Drugs and Cosmetics Act, 1940 and AYUSH licensing rules
+- FSSAI Ayurveda Aahara Regulations
+- WIPO materials on intellectual property, genetic resources, and associated traditional knowledge
+
+## Impact and Benefits
+
+IP-SAKTI Sahayak aims to make trustworthy IP and regulatory information more accessible for Ayurvedic vaidyas, traditional healers, AYUSH researchers, startups, IP professionals, regulators, and indigenous communities. By grounding answers in cited evidence and separating jurisdictions, it supports more informed research while helping reduce the risk of misinformation and biopiracy.
+
+## Future Scope
+
+- Expand multilingual and voice coverage with language-specific legal terminology validation
+- Add knowledge-graph and agentic-reasoning capabilities
+- Introduce scheduled, human-curated legal-corpus updates
+- Integrate permission-based connectors for paid registry sources
+- Extend patent surveillance and prior-art research workflows
+- Enhance human-review workflows and institutional dashboards
+
+## Security and Responsible Use
+
+- Do not commit passwords, access tokens, API keys, or `.env` files.
+- Keep third-party credentials server-side; never expose them in the frontend.
+- Use official and authoritative sources wherever possible.
+- Treat generated content as research assistance and verify it before legal, regulatory, or commercial action.
+
+## License
+
+This project is distributed under the license included in the repository. See [LICENSE](LICENSE) for details.
